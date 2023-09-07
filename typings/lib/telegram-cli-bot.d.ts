@@ -1,12 +1,3 @@
-/**
- * @typedef {import('winston').Logger} Logger
- * @typedef {import('node-telegram-bot-api').SendMessageOptions} SendMessageOptions
- * @typedef {import('node-telegram-bot-api').Message} Message
- * @typedef {import('./types.js').Command} Command
- * @typedef {import('./types.js').Session} Session
- * @typedef {import('./types.js').CommandHandler} CommandHandler
- * @typedef {import('./types.js').TelegramCliBotOptions} TelegramCliBotOptions
- */
 export default class TelegramCliBot extends TelegramBot {
     /**
      * @param {string} token
@@ -16,7 +7,12 @@ export default class TelegramCliBot extends TelegramBot {
     /** @type {Logger} */ logger: Logger;
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     /** @type {Map<string, Command>} */ commandByName: Map<string, Command>;
-    /** @type {Map<number, Session>} */ sessionByUserId: Map<number, Session>;
+    /** @type {ContextManager} */ contextManager: ContextManager;
+    /**
+     * Get all registered commands, with /cancel at the end.
+     * @returns {Command[]}
+     */
+    get commands(): import("./types.js").Command[];
     /**
      * @param {number[]|number} chatIds
      */
@@ -27,9 +23,29 @@ export default class TelegramCliBot extends TelegramBot {
      */
     isChatIdWhitelisted(chatId: number): boolean;
     /**
+     * @private
+     * @param {Context} ctx
+     */
+    private handleCancelCommand;
+    /**
+     * @private
+     * @param {Message} msg
+     * @returns {Promise<boolean>} true if the message is handled by a context
+     */
+    private handleContextReply;
+    /**
+     * @private
+     * @param {Message} msg
+     */
+    private handleCommand;
+    /**
      * @param {Command} cmd
      */
     addCommand(cmd: Command): void;
+    /**
+     * Sync commands with telegram. Commands will be shown in the command list in the chat with the bot.
+     */
+    syncCommands(): Promise<void>;
     /**
      * @param {number|number[]} chatIds
      * @param {string|string[]} content
@@ -42,7 +58,7 @@ export type Logger = import('winston').Logger;
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
 export type Message = import('node-telegram-bot-api').Message;
 export type Command = import('./types.js').Command;
-export type Session = import('./types.js').Session;
 export type CommandHandler = import('./types.js').CommandHandler;
 export type TelegramCliBotOptions = import('./types.js').TelegramCliBotOptions;
 import TelegramBot from 'node-telegram-bot-api';
+import ContextManager from './context-manager.js';

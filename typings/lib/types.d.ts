@@ -1,3 +1,6 @@
+export type Message = import('node-telegram-bot-api').Message;
+export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
+export type Context = import('./context').default;
 export type TelegramCliBotOptions = {
     logger?: import('winston').Logger;
     /**
@@ -13,6 +16,10 @@ export type TelegramCliBotOptions = {
      */
     enableChatIdCommand?: boolean;
     /**
+     * whether to enable /cancel command
+     */
+    enableCancelCommand?: boolean;
+    /**
      * Only allow commands from these chat ids. If not set, all chat ids are allowed.
      */
     whitelistedChatIds?: number[];
@@ -21,30 +28,21 @@ export type Command = {
     name: string;
     handler: CommandHandler;
     /**
-     * names are for help message, but the number of names should match the number of args in handler
+     * Names here are for help messages only, but the number of names will be used to change against the number of args passed to the handler.
      */
     params?: string[];
     /**
-     * optional args
+     * Names here are for help messages only.
      */
     optionalParams?: string[];
     /**
      * for help message
      */
     description?: string;
+    enabled?: boolean;
     /**
-     * If true, a session will be passed as the 2nd param of the handler and subsequent messages (not prefixed with /) from the same user will call the command again until session.end() is called. CAUTION: to read message from groups, talk to \@BotFather and disable privacy mode
+     * If true, the command will be included in /help and /start message
      */
-    sessionEnabled?: boolean;
+    helpMsgEnabled?: boolean;
 };
-export type Session = {
-    /**
-     * name of the command that is being executed
-     */
-    _commandName: string;
-    /**
-     * end the session
-     */
-    end: Function;
-};
-export type CommandHandler = (msg: Message, session: Session, ...args: string[]) => Promise<void>;
+export type CommandHandler = (ctx: Context) => Promise<void>;
