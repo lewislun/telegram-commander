@@ -8,7 +8,8 @@ export default class TelegramCliBot extends TelegramBot {
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
     /** @type {ParseMode} */ defaultParseMode: ParseMode;
-    /** @protected @type {boolean} */ protected errorReplyEnabled: boolean;
+    /** @type {boolean} */ errorReplyEnabled: boolean;
+    /** @type {User} */ botUser: User;
     /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
     /**
      * Get all registered commands, with /cancel at the end.
@@ -61,6 +62,7 @@ export type Logger = import('winston').Logger;
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
 export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type Message = import('node-telegram-bot-api').Message;
+export type User = import('node-telegram-bot-api').User;
 import TelegramBot from 'node-telegram-bot-api';
 import * as types from './types.js';
 import ContextManager from './context-manager.js';
