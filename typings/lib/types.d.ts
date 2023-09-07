@@ -23,14 +23,28 @@ export type Command = {
     /**
      * names are for help message, but the number of names should match the number of args in handler
      */
-    args?: string[];
+    params?: string[];
     /**
      * optional args
      */
-    optionalArgs?: string[];
+    optionalParams?: string[];
     /**
      * for help message
      */
     description?: string;
+    /**
+     * If true, a session will be passed as the 2nd param of the handler and subsequent messages (not prefixed with /) from the same user will call the command again until session.end() is called. CAUTION: to read message from groups, talk to \@BotFather and disable privacy mode
+     */
+    sessionEnabled?: boolean;
 };
-export type CommandHandler = (msg: Message, session: object, ...args: string[]) => Promise<void>;
+export type Session = {
+    /**
+     * name of the command that is being executed
+     */
+    _commandName: string;
+    /**
+     * end the session
+     */
+    end: Function;
+};
+export type CommandHandler = (msg: Message, session: Session, ...args: string[]) => Promise<void>;

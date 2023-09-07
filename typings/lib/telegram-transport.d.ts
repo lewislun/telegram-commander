@@ -1,7 +1,7 @@
 /**
  * @typedef {import('./telegram-cli-bot').default} TelegramCliBot
  */
-export default class TelegramBotTransport {
+export default class TelegramBotTransport extends Transport {
     /**
      * @param {TelegramCliBot} bot
      * @param {number[]} chatIds
@@ -20,3 +20,4 @@ export default class TelegramBotTransport {
     log(info: any, next: Function): void;
 }
 export type TelegramCliBot = import('./telegram-cli-bot').default;
+import Transport from 'winston-transport';
