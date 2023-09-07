@@ -4,19 +4,21 @@ export default class TelegramCliBot extends TelegramBot {
      * @param {types.TelegramCliBotOptions} [opts={}]
      */
     constructor(token: string, opts?: types.TelegramCliBotOptions);
-    /** @type {Logger} */ logger: Logger;
+    /** @type {Logger|Console} */ logger: Logger | Console;
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
-    /** @type {ContextManager} */ contextManager: ContextManager;
+    /** @type {ParseMode} */ defaultParseMode: ParseMode;
+    /** @protected @type {boolean} */ protected errorReplyEnabled: boolean;
+    /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
     /**
      * Get all registered commands, with /cancel at the end.
      * @returns {types.Command[]}
      */
     get commands(): types.Command[];
     /**
-     * @param {number[]|number} chatIds
+     * @param {Context} ctx
      */
-    handleStartCommand(chatIds: number[] | number): Promise<void>;
+    handleStartCommand(ctx: Context): Promise<void>;
     /**
      * @param {number} chatId
      * @returns {boolean}
@@ -44,6 +46,7 @@ export default class TelegramCliBot extends TelegramBot {
     addCommand(cmd: types.Command): void;
     /**
      * Sync commands with telegram. Commands will be shown in the command list in the chat with the bot.
+     * Commands with params will not be synced. (since clicking on the command list will instantly send the command without params in Telegram)
      */
     syncCommands(): Promise<void>;
     /**
@@ -56,7 +59,9 @@ export default class TelegramCliBot extends TelegramBot {
 }
 export type Logger = import('winston').Logger;
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
+export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type Message = import('node-telegram-bot-api').Message;
 import TelegramBot from 'node-telegram-bot-api';
 import * as types from './types.js';
 import ContextManager from './context-manager.js';
+import Context from './context.js';
