@@ -13,16 +13,18 @@ export default class TelegramCliBot {
      */
     constructor(token: string, opts?: TelegramCliBotOptions);
     /** @type {Logger} */ logger: Logger;
-    /** @type {TelegramBot} */ bot: TelegramBot;
     /** @type {Command[]} */ commands: Command[];
+    /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     sendCommandInfos(chatId: any): Promise<void>;
     /**
-     * @param {string} name
-     * @param {CommandHandler} handler
-     * @param {string[]} [argNames]
-     * @param {string} [description]
+     * @param {number} chatId
+     * @returns {boolean}
      */
-    addCommand(name: string, argNames?: string[], description?: string, handler: CommandHandler): Promise<void>;
+    isChatIdWhitelisted(chatId: number): boolean;
+    /**
+     * @param {Command} cmd
+     */
+    addCommand(cmd: Command): void;
     /**
      * @param {number|number[]} chatIds
      * @param {string|string[]} content
