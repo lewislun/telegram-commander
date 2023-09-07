@@ -26,7 +26,7 @@ bot.addCommand({
 				session.end() // this must be call to end the session
 				break
 		}
-	}
+	},
 })
 
 bot.addCommand({
@@ -37,19 +37,38 @@ bot.addCommand({
 			'List of members:',
 			...members.map(member => `${member.name} \\(${member.age}\\)`),
 		])
-	}
+	},
 })
 
 bot.addCommand({
 	name: 'age',
-	description: 'get age of a member',
+	description: 'Get the age of a member',
 	params: ['name'],
 	handler: async (msg, _, name) => {
-		const member = members.find(member => member.name.toLowerCase() === name.toLowerCase())
+		const member = members.find(member => member.name)
 		if (!member) {
 			await bot.sendMessage(msg.chat.id, `Member ${name} not found\\.`)
 			return
 		}
 		await bot.sendMessage(msg.chat.id, `${member.name} is ${member.age} years old\\.`)
-	}
+	},
+})
+
+bot.addCommand({
+	name: 'edit',
+	description: 'Edit a member\'s age (and name)',
+	params: ['name', 'age'],
+	optionalParams: ['new-name'],
+	handler: async (msg, _, name, age, newName) => {
+		const member = members.find(member => member.name)
+		if (!member) {
+			await bot.sendMessage(msg.chat.id, `Member ${name} not found\\.`)
+			return
+		}
+		member.age = age
+		if (newName) {
+			member.name = newName
+		}
+		await bot.sendMessage(msg.chat.id, `Member ${name} updated\\.`)
+	},
 })
