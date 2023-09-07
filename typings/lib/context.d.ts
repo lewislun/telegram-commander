@@ -15,9 +15,14 @@ export default class Context {
     /** @type {TelegramCliBot} */ bot: TelegramCliBot;
     /** @type {Command} */ command: Command;
     /** @type {Message} */ msg: Message;
-    /** @type {(Message) => void} */ messageResolve: (Message: any) => void;
     /** @type {Context|undefined} */ prevContext: Context | undefined;
+    /** @private @type {(Message) => void} */ private messageResolve;
+    /** @private @type {(Error) => void} */ private messageReject;
     args: string[];
+    /**
+     * @returns {boolean}
+     */
+    get isWaitingForMessage(): boolean;
     /**
      * @param {string|string[]} content
      * @param {SendMessageOptions} [opts={}]
@@ -32,6 +37,16 @@ export default class Context {
      * @returns {Promise<Message>}
      */
     waitForMessage(): Promise<Message>;
+    /**
+     * Receive message from the same user in the same chat. This is called by TelegramCliBot.
+     * @param {Message} msg
+     * @throws {Error} if not waiting for message
+     */
+    receiveMessage(msg: Message): void;
+    /**
+     * Cancel the context. This is called by TelegramCliBot.
+     */
+    cancel(): void;
 }
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
 export type Message = import('node-telegram-bot-api').Message;

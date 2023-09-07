@@ -1,7 +1,6 @@
 /**
  * @typedef {import('node-telegram-bot-api').Message} Message
  * @typedef {import('./telegram-cli-bot').default} TelegramCliBot
- * @typedef {import('./types.js').Command} Command
  */
 export default class ContextManager {
     /** @type {Map<string, Context>} */ contextBySource: Map<string, Context>;
@@ -25,7 +24,7 @@ export default class ContextManager {
     delete(msgOrContext: Message | Context): void;
     /**
      * @param {TelegramCliBot} bot
-     * @param {Command} commandName
+     * @param {types.Command} commandName
      * @param {Message} msg
      * @param {string[]} [args]
      * @returns {Context}
@@ -34,5 +33,4 @@ export default class ContextManager {
 }
 export type Message = import('node-telegram-bot-api').Message;
 export type TelegramCliBot = import('./telegram-cli-bot').default;
-export type Command = import('./types.js').Command;
 import Context from './context.js';

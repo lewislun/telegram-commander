@@ -1,22 +1,22 @@
 export default class TelegramCliBot extends TelegramBot {
     /**
      * @param {string} token
-     * @param {TelegramCliBotOptions} [opts={}]
+     * @param {types.TelegramCliBotOptions} [opts={}]
      */
-    constructor(token: string, opts?: TelegramCliBotOptions);
+    constructor(token: string, opts?: types.TelegramCliBotOptions);
     /** @type {Logger} */ logger: Logger;
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
-    /** @type {Map<string, Command>} */ commandByName: Map<string, Command>;
+    /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
     /** @type {ContextManager} */ contextManager: ContextManager;
     /**
      * Get all registered commands, with /cancel at the end.
-     * @returns {Command[]}
+     * @returns {types.Command[]}
      */
-    get commands(): import("./types.js").Command[];
+    get commands(): types.Command[];
     /**
      * @param {number[]|number} chatIds
      */
-    sendCommandInfos(chatIds: number[] | number): Promise<void>;
+    handleStartCommand(chatIds: number[] | number): Promise<void>;
     /**
      * @param {number} chatId
      * @returns {boolean}
@@ -39,9 +39,9 @@ export default class TelegramCliBot extends TelegramBot {
      */
     private handleCommand;
     /**
-     * @param {Command} cmd
+     * @param {types.Command} cmd
      */
-    addCommand(cmd: Command): void;
+    addCommand(cmd: types.Command): void;
     /**
      * Sync commands with telegram. Commands will be shown in the command list in the chat with the bot.
      */
@@ -57,8 +57,6 @@ export default class TelegramCliBot extends TelegramBot {
 export type Logger = import('winston').Logger;
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
 export type Message = import('node-telegram-bot-api').Message;
-export type Command = import('./types.js').Command;
-export type CommandHandler = import('./types.js').CommandHandler;
-export type TelegramCliBotOptions = import('./types.js').TelegramCliBotOptions;
 import TelegramBot from 'node-telegram-bot-api';
+import * as types from './types.js';
 import ContextManager from './context-manager.js';
