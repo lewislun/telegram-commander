@@ -1,2 +1,5 @@
 # npm
 /node_modules
+
+# pm2
+ecosystem.config.js
