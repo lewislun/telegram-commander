@@ -2,29 +2,24 @@
  * @typedef {import('node-telegram-bot-api').SendMessageOptions} SendMessageOptions
  * @typedef {import('node-telegram-bot-api').Message} Message
  * @typedef {import('node-telegram-bot-api').CallbackQuery} CallbackQuery
- * @typedef {import('./telegram-commander.js').TelegramCommander} TelegramCliBot
+ * @typedef {import('./telegram-commander.js').default} TelegramCommander
  * @typedef {import('./types.js').Command} Command
  */
 export default class Context {
     /**
-     * @param {TelegramCliBot} bot
+     * @param {TelegramCommander} bot
      * @param {Command} commandName
      * @param {Message} msg
      * @param {string[]} [args]
      */
-    constructor(bot: any, command: any, msg: Message, args?: string[]);
-    /** @type {TelegramCliBot} */ bot: any;
+    constructor(bot: TelegramCommander, command: any, msg: Message, args?: string[]);
+    /** @type {TelegramCommander} */ bot: TelegramCommander;
     /** @type {Command} */ command: Command;
     /** @type {Message} */ msg: Message;
     /** @type {Context|undefined} */ prevContext: Context | undefined;
-    /** @private @type {(Message) => void} */ private messageResolve;
     /** @private @type {(Error) => void} */ private messageReject;
     /** @private @type {(Error) => void} */ private callbackQueryReject;
     args: string[];
-    /**
-     * @returns {boolean}
-     */
-    get isWaitingForMessage(): boolean;
     /**
      * @param {string|string[]} content
      * @param {SendMessageOptions} [opts={}]
@@ -46,19 +41,13 @@ export default class Context {
      */
     waitForCallbackQueryOnce(inlineKeyboardMsg: Message, opts?: types.WaitForCallbackQueryOnceOptions): Promise<import("node-telegram-bot-api").CallbackQuery>;
     /**
-     * Receive message from the same user in the same chat. This is called by TelegramCliBot.
-     * @param {Message} msg
-     * @throws {Error} if not waiting for message
-     */
-    receiveMessage(msg: Message): void;
-    /**
-     * Cancel the context. This is called by TelegramCliBot.
+     * Cancel the context.
      */
     cancel(): void;
 }
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
 export type Message = import('node-telegram-bot-api').Message;
 export type CallbackQuery = import('node-telegram-bot-api').CallbackQuery;
-export type TelegramCliBot = import('./telegram-commander.js').TelegramCommander;
+export type TelegramCommander = import('./telegram-commander.js').default;
 export type Command = import('./types.js').Command;
 import * as types from './types.js';

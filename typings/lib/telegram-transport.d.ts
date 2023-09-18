@@ -1,17 +1,17 @@
 /**
- * @typedef {import('./telegram-commander.js').TelegramCommander} TelegramCliBot
+ * @typedef {import('./telegram-commander.js').default} TelegramCommander
  */
 export default class TelegramBotTransport extends Transport {
     /**
-     * @param {TelegramCliBot} bot
+     * @param {TelegramCommander} bot
      * @param {number[]} chatIds
      * @param {object} [opts={}]
      * @param {Transport.TransportStreamOptions} [opts.transportOpts]
      */
-    constructor(bot: any, chatIds: number[], opts?: {
+    constructor(bot: TelegramCommander, chatIds: number[], opts?: {
         transportOpts?: Transport.TransportStreamOptions;
     });
-    /** @type {TelegramCliBot} */ bot: any;
+    /** @type {TelegramCommander} */ bot: TelegramCommander;
     /** @type {number[]} */ chatIds: number[];
     /**
      * @param {*} info
@@ -19,5 +19,5 @@ export default class TelegramBotTransport extends Transport {
      */
     log(info: any, next: Function): void;
 }
-export type TelegramCliBot = import('./telegram-commander.js').TelegramCommander;
+export type TelegramCommander = import('./telegram-commander.js').default;
 import Transport from 'winston-transport';

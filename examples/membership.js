@@ -1,7 +1,7 @@
-import { TelegramCliBot } from '../index.js'
+import { TelegramCommander } from '../index.js'
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN
-const bot = new TelegramCliBot(TOKEN, { logger: console })
+const bot = new TelegramCommander(TOKEN, { logger: console })
 const members = [{ name: 'John', age: 20 }]
 
 bot.addCommand({

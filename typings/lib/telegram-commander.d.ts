@@ -1,9 +1,9 @@
 export default class TelegramCommander extends TelegramBot {
     /**
      * @param {string} token
-     * @param {types.TelegramCliBotOptions} [opts={}]
+     * @param {types.TelegramCommanderOptions} [opts={}]
      */
-    constructor(token: string, opts?: types.TelegramCliBotOptions);
+    constructor(token: string, opts?: types.TelegramCommanderOptions);
     /** @type {Logger|Console} */ logger: Logger | Console;
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
@@ -31,12 +31,6 @@ export default class TelegramCommander extends TelegramBot {
      * @param {Context} ctx
      */
     private handleCancelCommand;
-    /**
-     * @private
-     * @param {Message} msg
-     * @returns {Promise<boolean>} true if the message is handled by a context
-     */
-    private handleContextReply;
     /**
      * @private
      * @param {Message} msg

@@ -4,7 +4,7 @@
  * @typedef {import('node-telegram-bot-api').SendMessageOptions} SendMessageOptions
  * @typedef {import('./context').default} Context
  *
- * @typedef TelegramCliBotOptions
+ * @typedef TelegramCommanderOptions
  * @property {import('winston').Logger} [logger]
  * @property {boolean} [startCommandEnabled=true] whether to enable /start command
  * @property {boolean} [cancelCommandEnabled=true] whether to enable /cancel command
@@ -32,8 +32,16 @@
  * @property {string} msgIdentifier
  * @property {number} [maxCount] // if set, the listener will be removed after this many callback queries
  * @property {number} listenedCount
- * @property {number} [cmdCallerId] // if set, only callback queries from this user will be handled
- * @property {(CallbackQuery) => Promise<void>} handler
+ * @property {number} [targetUserId] // if set, only callback queries from this user will be handled
+ * @property {(query: CallbackQuery) => Promise<void>} handler
+ *
+ * @typedef MessageListener
+ * @property {number} id
+ * @property {number} chatId
+ * @property {number} [maxCount] // if set, the listener will be removed after this many callback queries
+ * @property {number} listenedCount
+ * @property {number} [targetUserId] // if set, only messages from this user will be handled
+ * @property {(msg: Message) => Promise<void>} handler
  *
  * @typedef {(ctx: Context) => Promise<void>} CommandHandler
  */
@@ -43,7 +51,7 @@ export type Message = import('node-telegram-bot-api').Message;
 export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
 export type Context = import('./context').default;
-export type TelegramCliBotOptions = {
+export type TelegramCommanderOptions = {
     logger?: import('winston').Logger;
     /**
      * whether to enable /start command
@@ -107,7 +115,15 @@ export type CallbackQueryListener = {
     msgIdentifier: string;
     maxCount?: number;
     listenedCount: number;
-    cmdCallerId?: number;
-    handler: (CallbackQuery: any) => Promise<void>;
+    targetUserId?: number;
+    handler: (query: CallbackQuery) => Promise<void>;
+};
+export type MessageListener = {
+    id: number;
+    chatId: number;
+    maxCount?: number;
+    listenedCount: number;
+    targetUserId?: number;
+    handler: (msg: Message) => Promise<void>;
 };
 export type CommandHandler = (ctx: Context) => Promise<void>;
