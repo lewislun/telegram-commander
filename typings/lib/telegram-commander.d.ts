@@ -1,4 +1,4 @@
-export default class TelegramCliBot extends TelegramBot {
+export default class TelegramCommander extends TelegramBot {
     /**
      * @param {string} token
      * @param {types.TelegramCliBotOptions} [opts={}]
@@ -11,6 +11,7 @@ export default class TelegramCliBot extends TelegramBot {
     /** @type {boolean} */ errorReplyEnabled: boolean;
     /** @type {User} */ botUser: User;
     /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
+    /** @protected @type {ReplyListenerRegistry} */ protected replyListenerRegistry: ReplyListenerRegistry;
     /**
      * Get all registered commands, with /cancel at the end.
      * @returns {types.Command[]}
@@ -66,4 +67,5 @@ export type User = import('node-telegram-bot-api').User;
 import TelegramBot from 'node-telegram-bot-api';
 import * as types from './types.js';
 import ContextManager from './context-manager.js';
+import ReplyListenerRegistry from './reply-listener-registry.js';
 import Context from './context.js';

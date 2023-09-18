@@ -1,14 +1,15 @@
 /**
  * @typedef {import('node-telegram-bot-api').Message} Message
- * @typedef {import('./telegram-cli-bot').default} TelegramCliBot
+ * @typedef {import('./telegram-commander.js').TelegramCommander} TelegramCliBot
  */
 export default class ContextManager {
     /** @type {Map<string, Context>} */ contextBySource: Map<string, Context>;
     /**
+     * @private
      * @param {Message} msg
      * @returns {string}
      */
-    getSource(msg: Message): string;
+    private getSource;
     /**
      * @param {Message} msg
      * @returns {Context|undefined}
@@ -29,8 +30,8 @@ export default class ContextManager {
      * @param {string[]} [args]
      * @returns {Context}
      */
-    new(bot: TelegramCliBot, command: any, msg: Message, args?: string[]): Context;
+    new(bot: any, command: any, msg: Message, args?: string[]): Context;
 }
 export type Message = import('node-telegram-bot-api').Message;
-export type TelegramCliBot = import('./telegram-cli-bot').default;
+export type TelegramCliBot = import('./telegram-commander.js').TelegramCommander;
 import Context from './context.js';

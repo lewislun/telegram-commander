@@ -1,11 +1,11 @@
-import { TelegramCliBot, escapeMarkdownV2 } from '../index.js'
+import { TelegramCommander, escapeMarkdownV2 } from '../index.js'
 
 /**
  * @typedef {import('node-telegram-bot-api').ReplyKeyboardMarkup} ReplyKeyboardMarkup
  */
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN
-const bot = new TelegramCliBot(TOKEN, { logger: console })
+const bot = new TelegramCommander(TOKEN, { logger: console })
 
 bot.addCommand({
 	name: 'beep',

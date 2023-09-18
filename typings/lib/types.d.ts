@@ -22,6 +22,19 @@
  * @property {boolean} [startCommandEnabled=true] If true, the command will be included in /start message.
  * @property {boolean} [listingEnabled=true] If true, the command will be included in the command listing. (i.e. register at BotFather)
  *
+ * @typedef WaitForCallbackQueryOnceOptions
+ * @property {boolean} [originalCallerOnly=true] If true, only callback query from the original command caller will be accepted.
+ * @property {boolean} [closeKeyboardOnDone=true] If true, the keyboard will be closed after the callback query is received or the context is cancelled.
+ * @property {boolean} [autoBlankAnswer=true] If true, an empty answer will be sent to the callback query automatically to prevent Telegram from showing a loading indicator.
+ *
+ * @typedef CallbackQueryListener
+ * @property {number} id
+ * @property {string} msgIdentifier
+ * @property {number} [maxCount] // if set, the listener will be removed after this many callback queries
+ * @property {number} listenedCount
+ * @property {number} [cmdCallerId] // if set, only callback queries from this user will be handled
+ * @property {(CallbackQuery) => Promise<void>} handler
+ *
  * @typedef {(ctx: Context) => Promise<void>} CommandHandler
  */
 export class ContextCancelError extends Error {
@@ -74,5 +87,27 @@ export type Command = {
      * If true, the command will be included in the command listing. (i.e. register at BotFather)
      */
     listingEnabled?: boolean;
+};
+export type WaitForCallbackQueryOnceOptions = {
+    /**
+     * If true, only callback query from the original command caller will be accepted.
+     */
+    originalCallerOnly?: boolean;
+    /**
+     * If true, the keyboard will be closed after the callback query is received or the context is cancelled.
+     */
+    closeKeyboardOnDone?: boolean;
+    /**
+     * If true, an empty answer will be sent to the callback query automatically to prevent Telegram from showing a loading indicator.
+     */
+    autoBlankAnswer?: boolean;
+};
+export type CallbackQueryListener = {
+    id: number;
+    msgIdentifier: string;
+    maxCount?: number;
+    listenedCount: number;
+    cmdCallerId?: number;
+    handler: (CallbackQuery: any) => Promise<void>;
 };
 export type CommandHandler = (ctx: Context) => Promise<void>;

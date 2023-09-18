@@ -1,5 +1,5 @@
 {
-  "name": "telegram-cli-bot",
+  "name": "telegram-commander",
   "version": "0.3.2",
   "description": "",
   "main": "index.js",
