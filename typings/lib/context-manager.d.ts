@@ -3,18 +3,18 @@
  * @typedef {import('./telegram-commander.js').default} TelegramCommander
  */
 export default class ContextManager {
-    /** @type {Map<string, Context>} */ contextBySource: Map<string, Context>;
+    /** @type {Map<string, Map<number, Context>>} */ contextByIdByConvId: Map<string, Map<number, Context>>;
     /**
      * @private
      * @param {Message} msg
      * @returns {string}
      */
-    private getSource;
+    private getConversationId;
     /**
      * @param {Message} msg
-     * @returns {Context|undefined}
+     * @returns {Map<number, Context>|undefined}
      */
-    get(msg: Message): Context | undefined;
+    get(msg: Message): Map<number, Context> | undefined;
     /**
      * @param {Context} context
      */

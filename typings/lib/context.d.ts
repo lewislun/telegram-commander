@@ -1,10 +1,3 @@
-/**
- * @typedef {import('node-telegram-bot-api').SendMessageOptions} SendMessageOptions
- * @typedef {import('node-telegram-bot-api').Message} Message
- * @typedef {import('node-telegram-bot-api').CallbackQuery} CallbackQuery
- * @typedef {import('./telegram-commander.js').default} TelegramCommander
- * @typedef {import('./types.js').Command} Command
- */
 export default class Context {
     /**
      * @param {TelegramCommander} bot
@@ -13,10 +6,11 @@ export default class Context {
      * @param {string[]} [args]
      */
     constructor(bot: TelegramCommander, command: any, msg: Message, args?: string[]);
+    /** @readonly @type {number} */ readonly id: number;
     /** @type {TelegramCommander} */ bot: TelegramCommander;
     /** @type {Command} */ command: Command;
     /** @type {Message} */ msg: Message;
-    /** @type {Context|undefined} */ prevContext: Context | undefined;
+    /** @type {Context[]|undefined} */ prevContexts: Context[] | undefined;
     /** @private @type {(Error) => void} */ private messageReject;
     /** @private @type {(Error) => void} */ private callbackQueryReject;
     args: string[];
