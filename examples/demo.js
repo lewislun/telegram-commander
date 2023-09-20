@@ -25,7 +25,7 @@ bot.addCommand({
 		}})
 		await ctx.reply(escapeMarkdownV2('You can also try calling /cancel to cancel the command.'))
 		const msg = await ctx.waitForMessage()
-		await ctx.reply(`You pressed ${msg.text}`)
+		await ctx.reply(escapeMarkdownV2(`You replied with ${msg.text}`))
 		await ctx.reply('Reply Keyboard Markup closed')
 	}
 })
@@ -127,7 +127,7 @@ bot.addCommand({
 		await ctx.reply('This command only listens to reply of the command caller if it is in a group chat\\.')
 		await ctx.reply(escapeMarkdownV2('Waiting for caller\'s reply... (other group member can try to reply, but it will not be processed)'))
 		const msg = await ctx.waitForMessage()
-		await ctx.reply(`Command Caller said ${msg.text}`)
+		await ctx.reply(escapeMarkdownV2(`Command Caller said ${msg.text}`))
 		const inlineKeyboardMsg = await ctx.reply(escapeMarkdownV2('Waiting for button press...'), { reply_markup: { inline_keyboard: [[{ text: 'Press me!', callback_data: 'press' }]] }})
 		await ctx.waitForCallbackQueryOnce(inlineKeyboardMsg)
 		await ctx.reply(`Command Caller pressed the button\\!`)
