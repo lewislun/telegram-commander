@@ -4,6 +4,7 @@
 		"Conv",
 		"inlinekeyboard",
 		"mixedparams",
+		"nongroup",
 		"optionalparams",
 		"persistentcontext",
 		"replykeyboard"

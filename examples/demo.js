@@ -119,6 +119,21 @@ bot.addCommand({
 	},
 })
 
+bot.addCommand({
+	name: 'nongroup',
+	description: 'Non-Group Command',
+	groupMode: false,  // group mode is enabled by default
+	handler: async ctx => {
+		await ctx.reply('This command only listens to reply of the command caller if it is in a group chat\\.')
+		await ctx.reply(escapeMarkdownV2('Waiting for caller\'s reply... (other group member can try to reply, but it will not be processed)'))
+		const msg = await ctx.waitForMessage()
+		await ctx.reply(`Command Caller said ${msg.text}`)
+		const inlineKeyboardMsg = await ctx.reply(escapeMarkdownV2('Waiting for button press...'), { reply_markup: { inline_keyboard: [[{ text: 'Press me!', callback_data: 'press' }]] }})
+		await ctx.waitForCallbackQueryOnce(inlineKeyboardMsg)
+		await ctx.reply(`Command Caller pressed the button\\!`)
+	},
+})
+
 
 // By calling syncCommands(), commands WITHOUT mandatory params will be shown in the command list in the chat with the bot
 await bot.syncCommands()
