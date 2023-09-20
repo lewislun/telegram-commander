@@ -6,6 +6,12 @@ export default class ContextManager {
     /** @type {Map<string, Context>} */ linearContextByConvoId: Map<string, Context>;
     /** @type {Map<number, Context>} */ persistentContextById: Map<number, Context>;
     /**
+     * @param {number} chatId
+     * @param {number} [targetUserId]
+     * @returns {Context|undefined}
+     */
+    getLinearContext(chatId: number, targetUserId?: number): Context | undefined;
+    /**
      * @param {Context} context
      */
     set(context: Context): void;

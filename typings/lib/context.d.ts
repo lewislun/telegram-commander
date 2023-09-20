@@ -7,6 +7,7 @@ export default class Context {
      * @returns {Context}
      */
     static fromCommand(bot: TelegramCommander, command: Command, msg: Message, args?: string[]): Context;
+    static getConversationId(chatId: any, targetUserId: any): string;
     /**
      * @param {TelegramCommander} bot
      * @param {number} chatId
