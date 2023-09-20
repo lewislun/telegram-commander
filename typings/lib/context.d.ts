@@ -1,21 +1,35 @@
 export default class Context {
     /**
      * @param {TelegramCommander} bot
-     * @param {Command} commandName
+     * @param {Command} command
      * @param {Message} msg
      * @param {string[]} [args]
+     * @returns {Context}
      */
-    constructor(bot: TelegramCommander, command: any, msg: Message, args?: string[]);
+    static fromCommand(bot: TelegramCommander, command: Command, msg: Message, args?: string[]): Context;
+    /**
+     * @param {TelegramCommander} bot
+     * @param {number} chatId
+     * @param {object} [opts={}]
+     * @param {types.ContextType} [opts.type='linear']
+     * @param {number} [opts.targetUserId]
+     */
+    constructor(bot: TelegramCommander, chatId: number, opts?: {
+        type?: types.ContextType;
+        targetUserId?: number;
+    });
     /** @readonly @type {number} */ readonly id: number;
     /** @type {types.ContextType} */ type: types.ContextType;
-    /** @type {number} */ targetUserId: number;
     /** @type {TelegramCommander} */ bot: TelegramCommander;
+    /** @type {number} */ chatId: number;
     /** @type {Command} */ command: Command;
-    /** @type {Message} */ msg: Message;
+    /** @type {Message} */ triggerMsg: Message;
+    /** @type {number} */ targetUserId: number;
     /** @type {string[]} */ args: string[];
     /** @type {Context|undefined} */ prevContext: Context | undefined;
     /** @private @type {(Error) => void} */ private messageReject;
     /** @private @type {(Error) => void} */ private callbackQueryReject;
+    get conversationId(): string;
     /**
      * @param {string|string[]} content
      * @param {SendMessageOptions} [opts={}]
