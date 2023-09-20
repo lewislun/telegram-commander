@@ -3,7 +3,7 @@
  * @typedef {import('./telegram-commander.js').default} TelegramCommander
  */
 export default class ContextManager {
-    /** @type {Map<string, Map<number, Context>>} */ contextByIdByConvId: Map<string, Map<number, Context>>;
+    /** @type {Map<string, Context>} */ linearContextByConvId: Map<string, Context>;
     /**
      * @private
      * @param {Message} msg
@@ -11,18 +11,14 @@ export default class ContextManager {
      */
     private getConversationId;
     /**
-     * @param {Message} msg
-     * @returns {Map<number, Context>|undefined}
-     */
-    get(msg: Message): Map<number, Context> | undefined;
-    /**
      * @param {Context} context
      */
     set(context: Context): void;
     /**
-     * @param {Message|Context} msgOrContext
+     * Cancel the context and remove it from the context manager.
+     * @param {Context} context
      */
-    delete(msgOrContext: Message | Context): void;
+    delete(context: Context): void;
     /**
      * @param {TelegramCommander} bot
      * @param {types.Command} commandName

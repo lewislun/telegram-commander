@@ -7,13 +7,18 @@ export default class Context {
      */
     constructor(bot: TelegramCommander, command: any, msg: Message, args?: string[]);
     /** @readonly @type {number} */ readonly id: number;
+    /** @type {types.ContextType} */ type: {
+        LINEAR: string;
+        PERSISTENT: string;
+    };
+    /** @type {number} */ targetUserId: number;
     /** @type {TelegramCommander} */ bot: TelegramCommander;
     /** @type {Command} */ command: Command;
     /** @type {Message} */ msg: Message;
-    /** @type {Context[]|undefined} */ prevContexts: Context[] | undefined;
+    /** @type {string[]} */ args: string[];
+    /** @type {Context|undefined} */ prevContext: Context | undefined;
     /** @private @type {(Error) => void} */ private messageReject;
     /** @private @type {(Error) => void} */ private callbackQueryReject;
-    args: string[];
     /**
      * @param {string|string[]} content
      * @param {SendMessageOptions} [opts={}]
