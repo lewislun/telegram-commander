@@ -1,11 +1,12 @@
 /**
+ * @typedef {import('./context.js').default} Context
  * @typedef {import('node-telegram-bot-api').Message} Message
  * @typedef {import('node-telegram-bot-api').CallbackQuery} CallbackQuery
  */
 export default class ReplyListenerRegistry {
     /** @type {number} */ nextListenerId: number;
     /** @type {Map.<string, Map<number, types.CallbackQueryListener>>} */ queryListenerByIdByMsgIdentifier: Map<string, Map<number, types.CallbackQueryListener>>;
-    /** @type {Map.<number, string>} */ msgIdentifierByQueryListenerId: Map<number, string>;
+    /** @type {Map.<number, string>} */ fullMsgIdByQueryListenerId: Map<number, string>;
     /** @type {Map.<number, Map<number, types.MessageListener>>} */ msgListenerByIdByChatId: Map<number, Map<number, types.MessageListener>>;
     /** @type {Map.<number, number>} */ chatIdByMsgListenerId: Map<number, number>;
     /**
@@ -15,7 +16,7 @@ export default class ReplyListenerRegistry {
      * @param {Message} msg
      * @returns {string}
      */
-    private getMsgIdentifier;
+    private getFullMsgId;
     /**
      * @param {number} chatId
      * @param {number} count
@@ -46,6 +47,7 @@ export default class ReplyListenerRegistry {
      */
     handleMessage(msg: Message): Promise<void>;
 }
+export type Context = import('./context.js').default;
 export type Message = import('node-telegram-bot-api').Message;
 export type CallbackQuery = import('node-telegram-bot-api').CallbackQuery;
 import * as types from './types.js';

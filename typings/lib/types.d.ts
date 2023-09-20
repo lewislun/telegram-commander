@@ -1,3 +1,4 @@
+export type ContextType = string;
 export namespace ContextType {
     let LINEAR: string;
     let PERSISTENT: string;
@@ -35,12 +36,7 @@ export type Command = {
      * If true, every one in the group can reply to the conversation. Does not affect direct messages.
      */
     groupMode?: boolean;
-    contextType?: {
-        /** @description default type. Context will be cancelled if another command is called or a new conversation is created. */
-        LINEAR: string;
-        /** @description Context will not be cancelled if another command is called or a new conversation is created. When used incorrectly, it may cause weird UX. This type is mostly used for inline keyboards. */
-        PERSISTENT: string;
-    };
+    contextType?: ContextType;
     /**
      * Names here are for help messages only, but the number of names will be used to change against the number of args passed to the handler.
      */

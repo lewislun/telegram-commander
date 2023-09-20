@@ -4,6 +4,7 @@
  */
 export default class ContextManager {
     /** @type {Map<string, Context>} */ linearContextByConvId: Map<string, Context>;
+    /** @type {Map<number, Context>} */ persistentContextById: Map<number, Context>;
     /**
      * @private
      * @param {Message} msg

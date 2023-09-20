@@ -7,10 +7,7 @@ export default class Context {
      */
     constructor(bot: TelegramCommander, command: any, msg: Message, args?: string[]);
     /** @readonly @type {number} */ readonly id: number;
-    /** @type {types.ContextType} */ type: {
-        LINEAR: string;
-        PERSISTENT: string;
-    };
+    /** @type {types.ContextType} */ type: types.ContextType;
     /** @type {number} */ targetUserId: number;
     /** @type {TelegramCommander} */ bot: TelegramCommander;
     /** @type {Command} */ command: Command;
