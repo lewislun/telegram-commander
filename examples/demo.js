@@ -134,6 +134,22 @@ bot.addCommand({
 	},
 })
 
+bot.addCommand({
+	name: 'newconvo',
+	description: 'Start a new Conversation',
+	handler: async ctx => {
+		await ctx.reply('This command will start a new conversation in 5s\\.')
+		setTimeout(async () => {
+			await bot.newConversation(ctx.chatId, {}, async newCtx => {
+				const inlineKeyboardMsg = await newCtx.reply('This is a new conversation with a new context\\.', { reply_markup: { inline_keyboard: [[{ text: 'Hi!', callback_data: 'press' }]] }})
+				await newCtx.waitForCallbackQueryOnce(inlineKeyboardMsg)
+				await newCtx.reply('Bye\\! New context closed\\.')
+			})
+		}, 5000)
+		await ctx.reply('Context closed\\.')
+	}
+})
+
 
 // By calling syncCommands(), commands WITHOUT mandatory params will be shown in the command list in the chat with the bot
 await bot.syncCommands()

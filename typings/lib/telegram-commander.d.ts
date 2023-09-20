@@ -52,6 +52,17 @@ export default class TelegramCommander extends TelegramBot {
      * @returns {Promise<Message[]>}
      */
     sendMessage(chatIds: number | number[], content: string | string[], opts?: SendMessageOptions): Promise<Message[]>;
+    /**
+     * @param {number} chatId
+     * @param {object} [opts={}]
+     * @param {types.ContextType} [opts.type='linear']
+     * @param {number} [opts.targetUserId] If specified, only replies from this user will be handled.
+     * @param {(ctx: Context) => Promise<void>} handler
+     */
+    newConversation(chatId: number, opts?: {
+        type?: types.ContextType;
+        targetUserId?: number;
+    }, handler: (ctx: Context) => Promise<void>): Promise<void>;
 }
 export type Logger = import('winston').Logger;
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;

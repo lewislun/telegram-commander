@@ -31,7 +31,7 @@ export type TelegramCommanderOptions = {
 };
 export type Command = {
     name: string;
-    handler: CommandHandler;
+    handler: (ctx: Context) => Promise<void>;
     /**
      * If true, every one in the group can reply to the conversation. Does not affect direct messages.
      */
@@ -85,4 +85,3 @@ export type MessageListener = {
     targetUserId?: number;
     handler: (msg: Message) => Promise<void>;
 };
-export type CommandHandler = (ctx: Context) => Promise<void>;

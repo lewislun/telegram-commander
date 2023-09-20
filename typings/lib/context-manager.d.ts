@@ -3,7 +3,7 @@
  * @typedef {import('./telegram-commander.js').default} TelegramCommander
  */
 export default class ContextManager {
-    /** @type {Map<string, Context>} */ linearContextByConvId: Map<string, Context>;
+    /** @type {Map<string, Context>} */ linearContextByConvoId: Map<string, Context>;
     /** @type {Map<number, Context>} */ persistentContextById: Map<number, Context>;
     /**
      * @param {Context} context
