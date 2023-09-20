@@ -93,7 +93,8 @@ bot.addCommand({
 	params: ['param1', 'param2'],
 	handler: async ctx => {
 		await ctx.reply(`You have entered ${ctx.args[0]} and ${ctx.args[1]}`)
-		await ctx.reply('For commands with params, they will not be shown in the command list, since clicking on the command list will instantly send the command without params in Telegram\\.')
+		await ctx.reply('For commands with params, they will not be shown in the command list, since clicking on the command list will instantly send the command without arguments in Telegram\\.')
+		await ctx.reply(escapeMarkdownV2('Arguments with spaces are supported too, just wrap them in double quotes. (e.g. /params "Hello World" 123)'))
 	},
 })
 
@@ -103,7 +104,7 @@ bot.addCommand({
 	optionalParams: ['param1', 'param2'],
 	handler: async ctx => {
 		await ctx.reply(`You have entered ${ctx.args[0]} and ${ctx.args[1]}`)
-		await ctx.reply('Note that for commands with *optional params only*, the command list will show the command with the optional params, but clicking on it will still send the command without params in Telegram\\.')
+		await ctx.reply('Note that for commands with *optional params only*, the command list will show the command with the optional params, but clicking on it will still send the command without arguments in Telegram\\.')
 	},
 })
 
