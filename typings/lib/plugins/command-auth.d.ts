@@ -20,16 +20,23 @@ export default class CommandAuth extends TelegramCommanderPlugin {
     /** @type {number[]} */ defaultApproverChatIds: number[];
     /** @protected @type {Logger} */ protected logger: Logger;
     /** @protected @type {Map<number, Set<string>>} */ protected permissionSetByChatId: Map<number, Set<string>>;
+    /** @protected @type {Set<string>} */ protected oneTimePermissionSet: Set<string>;
     /**
      * @param {TelegramCommander} bot
      */
     init(bot: TelegramCommander): void;
     /**
-     * @param {types.Command} cmd
      * @param {Message} msg
+     * @param {types.Command} cmd
      * @returns {Promise<boolean>}
      */
-    canHandleCommand(cmd: types.Command, msg: Message): Promise<boolean>;
+    canHandleCommand(msg: Message, cmd: types.Command): Promise<boolean>;
+    /**
+     * @param {Message} msg
+     * @param {types.Command} cmd
+     * @returns {Promise<boolean>}
+     */
+    beforeCommandHandler(msg: Message, cmd: types.Command): Promise<boolean>;
     /**
      * @param {number} approverChatId
      * @param {number} approveeChatId
@@ -45,6 +52,17 @@ export default class CommandAuth extends TelegramCommanderPlugin {
      * @param {string} permission
      */
     addPermission(chatId: number, permission: string): void;
+    /**
+     * @param {number} chatId
+     * @param {string} permission
+     */
+    addOneTimePermission(chatId: number, permission: string): void;
+    /**
+     * @param {number} chatId
+     * @param {string} permission
+     * @returns {boolean}
+     */
+    useOneTimePermission(chatId: number, permission: string): boolean;
 }
 export type Logger = import('winston').Logger;
 export type Message = import('node-telegram-bot-api').Message;

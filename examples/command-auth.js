@@ -20,7 +20,7 @@ const bot = new TelegramCommander(TOKEN, {
 			{
 				permission: 'public',
 				noAuth: true,  // no authorization required
-				commandNames: ['casual1', 'casual2'],
+				commandNames: ['start', 'casual1', 'casual2'],
 			},
 		])
 	],

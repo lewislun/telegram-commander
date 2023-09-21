@@ -11,6 +11,7 @@ export default class TelegramCommander extends TelegramBot {
     /** @type {boolean} */ errorReplyEnabled: boolean;
     /** @type {User} */ botUser: User;
     /** @type {TelegramCommanderPlugin[]} */ plugins: TelegramCommanderPlugin[];
+    /** @type {((msg: Message, cmd: types.Command) => Promise<void>)[]} */ beforeCommandHandlers: ((msg: Message, cmd: types.Command) => Promise<void>)[];
     /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
     /** @protected @type {ReplyListenerRegistry} */ protected replyListenerRegistry: ReplyListenerRegistry;
     /**
@@ -33,11 +34,11 @@ export default class TelegramCommander extends TelegramBot {
      */
     private handleCancelCommand;
     /**
-     * @param {Command} cmd
      * @param {Message} msg
-     * @returns {Promise<boolean>}
+     * @param {Command} cmd
+     * @returns {boolean}
      */
-    canHandleCommand(cmd: Command, msg: Message): Promise<boolean>;
+    canHandleCommand(msg: Message, cmd: Command): boolean;
     /**
      * @private
      * @param {Message} msg
