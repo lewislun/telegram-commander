@@ -9,6 +9,7 @@ export type Message = import('node-telegram-bot-api').Message;
 export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOptions;
 export type Context = import('./context').default;
+export type TelegramCommanderPlugin = import('./plugins/index').TelegramCommanderPlugin;
 export type TelegramCommanderOptions = {
     logger?: import('winston').Logger;
     /**
@@ -28,6 +29,7 @@ export type TelegramCommanderOptions = {
      * whether to reply with error message when an error occurs
      */
     errorReplyEnabled?: boolean;
+    plugins?: TelegramCommanderPlugin[];
 };
 export type Command = {
     name: string;

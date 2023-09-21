@@ -8,6 +8,8 @@
 		"nongroup",
 		"optionalparams",
 		"persistentcontext",
-		"replykeyboard"
+		"replykeyboard",
+		"approver",
+		"approvee"
 	]
 }

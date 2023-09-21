@@ -10,6 +10,7 @@ export default class TelegramCommander extends TelegramBot {
     /** @type {ParseMode} */ defaultParseMode: ParseMode;
     /** @type {boolean} */ errorReplyEnabled: boolean;
     /** @type {User} */ botUser: User;
+    /** @type {TelegramCommanderPlugin[]} */ plugins: TelegramCommanderPlugin[];
     /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
     /** @protected @type {ReplyListenerRegistry} */ protected replyListenerRegistry: ReplyListenerRegistry;
     /**
@@ -31,6 +32,12 @@ export default class TelegramCommander extends TelegramBot {
      * @param {Context} ctx
      */
     private handleCancelCommand;
+    /**
+     * @param {Command} cmd
+     * @param {Message} msg
+     * @returns {Promise<boolean>}
+     */
+    canHandleCommand(cmd: Command, msg: Message): Promise<boolean>;
     /**
      * @private
      * @param {Message} msg
@@ -69,6 +76,7 @@ export type SendMessageOptions = import('node-telegram-bot-api').SendMessageOpti
 export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type Message = import('node-telegram-bot-api').Message;
 export type User = import('node-telegram-bot-api').User;
+export type TelegramCommanderPlugin = import('./plugins').TelegramCommanderPlugin;
 import TelegramBot from 'node-telegram-bot-api';
 import * as types from './types.js';
 import ContextManager from './context-manager.js';
