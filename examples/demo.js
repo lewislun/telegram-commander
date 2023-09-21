@@ -58,7 +58,7 @@ bot.addCommand({
 bot.addCommand({
 	name: 'persistentcontext',
 	description: 'Persistent Context',
-	type: ContextType.PERSISTENT,  // default is ContextType.LINEAR
+	contextType: ContextType.PERSISTENT,  // default is ContextType.LINEAR
 	handler: async ctx => {
 		let loopCount = 0
 		await ctx.reply(escapeMarkdownV2('Persistent Context is not cancelled when another command or /cancel is called.'))
