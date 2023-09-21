@@ -33,12 +33,13 @@ export default class CommandAuth extends TelegramCommanderPlugin {
     /**
      * @param {number} approverChatId
      * @param {number} approveeChatId
-     * @param {string} approveeName
+     * @param {string} approvee
      * @param {string} permission
      * @param {string} reason
+     * @param {Promise<ApprovalResult>} [approvalPromise] This is used to notify the approver that the approval is done (by another approver).
      * @returns {Promise<ApprovalResult>}
      */
-    askForApproval(approverChatId: number, approveeChatId: number, approveeName: string, permission: string, reason?: string): Promise<ApprovalResult>;
+    askForApproval(approverChatId: number, approveeChatId: number, approvee: string, permission: string, reason?: string, approvalPromise?: Promise<ApprovalResult>): Promise<ApprovalResult>;
     /**
      * @param {number} chatId
      * @param {string} permission
@@ -53,6 +54,10 @@ export type CommandGroup = {
     description: string;
     commandNames: string[];
     approvable?: boolean;
+    /**
+     * If true, do not check for permission.
+     */
+    noAuth?: boolean;
     /**
      * If not set, use the defaultApproverChatIds.
      */
