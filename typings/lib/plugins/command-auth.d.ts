@@ -10,33 +10,52 @@ export default class CommandAuth extends TelegramCommanderPlugin {
      * @param {object} [opts={}]
      * @param {Logger} [opts.logger] If not set, use the logger from TelegramCommander.
      * @param {number[]} [opts.defaultApproverChatIds] If not set, use the whitelistedChatIds from TelegramCommander.
+     * @param {object} [opts.storage] Persistent storage for permissions. If not set, use in-memory storage.
+     * @param {StorageGetter} opts.storage.getter Getter function for persistent storage.
+     * @param {StorageSetter} opts.storage.setter Setter function for persistent storage.
+     * @param {StorageRemover} opts.storage.remover Remover function for persistent storage.
      */
     constructor(groups: CommandGroup[], opts?: {
         logger?: Logger;
         defaultApproverChatIds?: number[];
+        storage?: {
+            getter: StorageGetter;
+            setter: StorageSetter;
+            remover: StorageRemover;
+        };
     });
     /** @type {Map<string, CommandGroup>} */ groupByPermission: Map<string, CommandGroup>;
     /** @type {Map<string, string} */ permissionByCommandName: Map<string, string>;
     /** @type {number[]} */ defaultApproverChatIds: number[];
     /** @protected @type {Logger} */ protected logger: Logger;
-    /** @protected @type {Map<number, Set<string>>} */ protected permissionSetByChatId: Map<number, Set<string>>;
-    /** @protected @type {Set<string>} */ protected oneTimePermissionSet: Set<string>;
+    /** @protected @type {Map<string, number>} */ protected usageCountByChatPermission: Map<string, number>;
+    /** @protected @type {StorageGetter} */ protected storageGetter: StorageGetter;
+    /** @protected @type {StorageSetter} */ protected storageSetter: StorageSetter;
+    /** @protected @type {StorageRemover} */ protected storageRemover: StorageRemover;
     /**
      * @param {TelegramCommander} bot
      */
     init(bot: TelegramCommander): void;
     /**
+     * Checks if the chat is authorized to call the command and CONSUME permission usage count if needed.
      * @param {Message} msg
      * @param {types.Command} cmd
      * @returns {Promise<boolean>}
      */
-    canHandleCommand(msg: Message, cmd: types.Command): Promise<boolean>;
+    authorizeCommand(msg: Message, cmd: types.Command): Promise<boolean>;
+    /**
+     * Checks if the chat is authorized to call the command without consuming permission usage count.
+     * @param {Message} msg
+     * @param {types.Command} cmd
+     * @returns {Promise<boolean>}
+     */
+    isChatAuthorized(msg: Message, cmd: types.Command): Promise<boolean>;
     /**
      * @param {Message} msg
      * @param {types.Command} cmd
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
-    beforeCommandHandler(msg: Message, cmd: types.Command): Promise<boolean>;
+    beforeCommandHandler(msg: Message, cmd: types.Command): Promise<void>;
     /**
      * @param {number} approverChatId
      * @param {number} approveeChatId
@@ -46,23 +65,47 @@ export default class CommandAuth extends TelegramCommanderPlugin {
      * @param {Promise<ApprovalResult>} [approvalPromise] This is used to notify the approver that the approval is done (by another approver).
      * @returns {Promise<ApprovalResult>}
      */
-    askForApproval(approverChatId: number, approveeChatId: number, approvee: string, permission: string, reason?: string, approvalPromise?: Promise<ApprovalResult>): Promise<ApprovalResult>;
+    startApprovalProcess(approverChatId: number, approveeChatId: number, approvee: string, permission: string, reason?: string, approvalPromise?: Promise<ApprovalResult>): Promise<ApprovalResult>;
     /**
      * @param {number} chatId
      * @param {string} permission
      */
-    addPermission(chatId: number, permission: string): void;
+    parseChatPermissionKey(chatId: number, permission: string): string;
     /**
      * @param {number} chatId
      * @param {string} permission
+     * @param {number} [usageCount=-1] Number of times the permission can be used. -1 means unlimited.
      */
-    addOneTimePermission(chatId: number, permission: string): void;
+    grantChatPermission(chatId: number, permission: string, usageCount?: number): Promise<void>;
     /**
      * @param {number} chatId
      * @param {string} permission
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
-    useOneTimePermission(chatId: number, permission: string): boolean;
+    useChatPermission(chatId: number, permission: string): Promise<boolean>;
+    /**
+     * Get the number of times the permission can be used.
+     * @protected
+     * @param {number} chatId
+     * @param {string} permission
+     * @returns {Promise<ChatPermission>}
+     */
+    protected getChatPermission(chatId: number, permission: string): Promise<ChatPermission>;
+    /**
+     * Set the number of times the permission can be used.
+     * @protected
+     * @param {number} chatId
+     * @param {string} permission
+     * @param {number} usageCount
+     */
+    protected setChatPermission(chatId: number, permission: string, usageCount: number): Promise<void>;
+    /**
+     * Remove the chat permission.
+     * @protected
+     * @param {number} chatId
+     * @param {string} permission
+     */
+    protected removeChatPermission(chatId: number, permission: string): Promise<void>;
 }
 export type Logger = import('winston').Logger;
 export type Message = import('node-telegram-bot-api').Message;
@@ -81,5 +124,11 @@ export type CommandGroup = {
      */
     approverChatIds?: number[];
 };
+export type ChatPermission = {
+    usageCount: number;
+};
+export type StorageGetter = (chatPermission: string) => Promise<ChatPermission | undefined>;
+export type StorageSetter = (chatPermission: string, val: ChatPermission) => Promise<void>;
+export type StorageRemover = (chatPermission: string) => Promise<void>;
 import TelegramCommanderPlugin from './base-plugin.js';
 import * as types from '../types.js';

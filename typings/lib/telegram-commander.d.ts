@@ -1,3 +1,13 @@
+/**
+ * @typedef {import('winston').Logger} Logger
+ * @typedef {import('node-telegram-bot-api').SendMessageOptions} SendMessageOptions
+ * @typedef {import('node-telegram-bot-api').ParseMode} ParseMode
+ * @typedef {import('node-telegram-bot-api').Message} Message
+ * @typedef {import('node-telegram-bot-api').User} User
+ * @typedef {import('./plugins').TelegramCommanderPlugin} TelegramCommanderPlugin
+ */
+export const START_COMMAND_NAME: "start";
+export const CANCEL_COMMAND_NAME: "cancel";
 export default class TelegramCommander extends TelegramBot {
     /**
      * @param {string} token
@@ -24,11 +34,6 @@ export default class TelegramCommander extends TelegramBot {
      */
     handleStartCommand(ctx: Context): Promise<void>;
     /**
-     * @param {number} chatId
-     * @returns {boolean}
-     */
-    isChatIdWhitelisted(chatId: number): boolean;
-    /**
      * @private
      * @param {Context} ctx
      */
@@ -36,9 +41,9 @@ export default class TelegramCommander extends TelegramBot {
     /**
      * @param {Message} msg
      * @param {Command} cmd
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
-    canHandleCommand(msg: Message, cmd: Command): boolean;
+    authorizeCommand(msg: Message, cmd: Command): Promise<boolean>;
     /**
      * @private
      * @param {Message} msg
