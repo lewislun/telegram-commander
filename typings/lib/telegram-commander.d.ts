@@ -21,7 +21,8 @@ export default class TelegramCommander extends TelegramBot {
     /** @type {boolean} */ errorReplyEnabled: boolean;
     /** @type {User} */ botUser: User;
     /** @type {TelegramCommanderPlugin[]} */ plugins: TelegramCommanderPlugin[];
-    /** @type {((msg: Message, cmd: types.Command) => Promise<void>)[]} */ beforeCommandHandlers: ((msg: Message, cmd: types.Command) => Promise<void>)[];
+    /** @type {((msg: Message, cmd: types.Command) => Promise<void>)[]} */ beforeAuthorizeCommandHooks: ((msg: Message, cmd: types.Command) => Promise<void>)[];
+    /** @type {((cmd: types.Command) => Promise<void>)[]} */ afterAddCommandHooks: ((cmd: types.Command) => Promise<void>)[];
     /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
     /** @protected @type {ReplyListenerRegistry} */ protected replyListenerRegistry: ReplyListenerRegistry;
     /**
@@ -52,7 +53,7 @@ export default class TelegramCommander extends TelegramBot {
     /**
      * @param {types.Command} cmd
      */
-    addCommand(cmd: types.Command): void;
+    addCommand(cmd: types.Command): Promise<void>;
     /**
      * Sync commands with telegram. Commands will be shown in the command list in the chat with the bot.
      * Commands with params will not be synced. (since clicking on the command list will instantly send the command without params in Telegram)

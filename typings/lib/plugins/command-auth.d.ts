@@ -27,6 +27,7 @@ export default class CommandAuth extends TelegramCommanderPlugin {
     /** @type {Map<string, CommandGroup>} */ groupByPermission: Map<string, CommandGroup>;
     /** @type {Map<string, string} */ permissionByCommandName: Map<string, string>;
     /** @type {number[]} */ defaultApproverChatIds: number[];
+    /** @type {CommandGroup[]} */ groups: CommandGroup[];
     /** @protected @type {Logger} */ protected logger: Logger;
     /** @protected @type {Map<string, number>} */ protected usageCountByChatPermission: Map<string, number>;
     /** @protected @type {StorageGetter} */ protected storageGetter: StorageGetter;
@@ -51,11 +52,18 @@ export default class CommandAuth extends TelegramCommanderPlugin {
      */
     isChatAuthorized(msg: Message, cmd: types.Command): Promise<boolean>;
     /**
+     * @protected
      * @param {Message} msg
      * @param {types.Command} cmd
      * @returns {Promise<void>}
      */
-    beforeCommandHandler(msg: Message, cmd: types.Command): Promise<void>;
+    protected beforeAuthorizeCommand(msg: Message, cmd: types.Command): Promise<void>;
+    /**
+     * @protected
+     * @param {types.Command} cmd
+     * @returns {Promise<void>}
+     */
+    protected afterAddCommand(cmd: types.Command): Promise<void>;
     /**
      * @param {number} approverChatId
      * @param {number} approveeChatId
@@ -113,7 +121,7 @@ export type TelegramCommander = import('../telegram-commander.js').default;
 export type CommandGroup = {
     permission: string;
     description: string;
-    commandNames: string[];
+    commandNames: (string | RegExp)[];
     approvable?: boolean;
     /**
      * If true, do not check for permission.
