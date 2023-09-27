@@ -15,12 +15,12 @@ const bot = new TelegramCommander(TOKEN, {
 			},
 			{
 				permission: 'admin',
-				commandNames: ['important'],
+				commandNames: [/^important/],
 			},
 			{
 				permission: 'public',
 				noAuth: true,  // no authorization required
-				commandNames: ['start', /^casual\d+/],
+				commandNames: ['start', /^casual/],
 			},
 		])
 	],
@@ -33,9 +33,15 @@ bot.addCommand({
 })
 
 bot.addCommand({
-	name: 'important',
+	name: 'important1',
 	description: 'An important command that requires permission to access. Users without permission can request permission upon calling this function.',
-	handler: async ctx => await ctx.reply('important secret message')
+	handler: async ctx => await ctx.reply('important secret message 1')
+})
+
+bot.addCommand({
+	name: 'important2',
+	description: 'An important command that requires permission to access. Users without permission can request permission upon calling this function.',
+	handler: async ctx => await ctx.reply('important secret message 2')
 })
 
 bot.addCommand({
