@@ -14,7 +14,7 @@ export default class TelegramCommander {
      * @param {types.TelegramCommanderOptions} [opts={}]
      */
     constructor(token: string, opts?: types.TelegramCommanderOptions);
-    /** @type {TelegramBot} */ bot: TelegramBot;
+    /** @type {import('node-telegram-bot-api')} */ bot: import('node-telegram-bot-api');
     /** @type {Logger|Console} */ logger: Logger | Console;
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
@@ -85,7 +85,6 @@ export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type Message = import('node-telegram-bot-api').Message;
 export type User = import('node-telegram-bot-api').User;
 export type TelegramCommanderPlugin = import('./plugins').TelegramCommanderPlugin;
-import TelegramBot from 'node-telegram-bot-api';
 import * as types from './types.js';
 import ContextManager from './context-manager.js';
 import ReplyListenerRegistry from './reply-listener-registry.js';
