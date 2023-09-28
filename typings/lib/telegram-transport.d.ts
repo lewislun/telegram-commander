@@ -11,7 +11,7 @@ export default class TelegramBotTransport extends Transport {
     constructor(bot: TelegramCommander, chatIds: number[], opts?: {
         transportOpts?: Transport.TransportStreamOptions;
     });
-    /** @type {TelegramCommander} */ bot: TelegramCommander;
+    /** @type {TelegramCommander} */ commander: TelegramCommander;
     /** @type {number[]} */ chatIds: number[];
     /**
      * @param {*} info

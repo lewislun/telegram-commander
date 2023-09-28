@@ -1,18 +1,18 @@
 import { TelegramCommander, escapeMarkdownV2, ContextType } from '../index.js'
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN
-const bot = new TelegramCommander(TOKEN, {
+const commander = new TelegramCommander(TOKEN, {
 	logger: console,
 	defaultParseMode: 'MarkdownV2',
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'ping',
 	description: 'Simple response',
 	handler: async ctx => await ctx.reply('pong')
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'replykeyboard',
 	description: 'Reply Keyboard Markup',
 	handler: async ctx => {
@@ -30,7 +30,7 @@ bot.addCommand({
 	}
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'inlinekeyboard',
 	description: 'Inline Keyboard Markup',
 	handler: async ctx => {
@@ -55,7 +55,7 @@ bot.addCommand({
 	}
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'persistentcontext',
 	description: 'Persistent Context',
 	contextType: ContextType.PERSISTENT,  // default is ContextType.LINEAR
@@ -71,7 +71,7 @@ bot.addCommand({
 
 		while (true) {
 			const query = await ctx.waitForCallbackQueryOnce(msg, { closeKeyboardOnDone: false })  // listen to button press
-			await bot.editMessageText(`You have pressed ${++loopCount} times`, {
+			await commander.bot.editMessageText(`You have pressed ${++loopCount} times`, {
 				message_id: msg.message_id,
 				chat_id: msg.chat.id,
 				reply_markup: { inline_keyboard: keyboard }
@@ -82,12 +82,12 @@ bot.addCommand({
 			}
 		}
 
-		await bot.editMessageReplyMarkup({}, { message_id: msg.message_id, chat_id: msg.chat.id })  // close the inline keyboard
+		await commander.bot.editMessageReplyMarkup({}, { message_id: msg.message_id, chat_id: msg.chat.id })  // close the inline keyboard
 		await ctx.reply('Persistent Context closed')
 	},
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'params',
 	description: 'Command with Params',
 	params: ['param1', 'param2'],
@@ -98,7 +98,7 @@ bot.addCommand({
 	},
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'optionalparams',
 	description: 'Command with Optional Params',
 	optionalParams: ['param1', 'param2'],
@@ -108,7 +108,7 @@ bot.addCommand({
 	},
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'mixedparams',
 	description: 'Command with both Params and Optional Params',
 	params: ['param1'],
@@ -119,7 +119,7 @@ bot.addCommand({
 	},
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'nongroup',
 	description: 'Non-Group Command',
 	groupMode: false,  // group mode is enabled by default
@@ -134,13 +134,13 @@ bot.addCommand({
 	},
 })
 
-bot.addCommand({
+commander.addCommand({
 	name: 'newconvo',
 	description: 'Start a new Conversation',
 	handler: async ctx => {
 		await ctx.reply('This command will start a new conversation in 5s\\.')
 		setTimeout(async () => {
-			await bot.newConversation(ctx.chatId, {}, async newCtx => {
+			await commander.newConversation(ctx.chatId, {}, async newCtx => {
 				const inlineKeyboardMsg = await newCtx.reply('This is a new conversation with a new context\\.', { reply_markup: { inline_keyboard: [[{ text: 'Hi!', callback_data: 'press' }]] }})
 				await newCtx.waitForCallbackQueryOnce(inlineKeyboardMsg)
 				await newCtx.reply('Bye\\! New context closed\\.')
@@ -152,4 +152,4 @@ bot.addCommand({
 
 
 // By calling syncCommands(), commands WITHOUT mandatory params will be shown in the command list in the chat with the bot
-await bot.syncCommands()
+await commander.syncCommands()

@@ -8,12 +8,13 @@
  */
 export const START_COMMAND_NAME: "start";
 export const CANCEL_COMMAND_NAME: "cancel";
-export default class TelegramCommander extends TelegramBot {
+export default class TelegramCommander {
     /**
      * @param {string} token
      * @param {types.TelegramCommanderOptions} [opts={}]
      */
     constructor(token: string, opts?: types.TelegramCommanderOptions);
+    /** @type {TelegramBot} */ bot: TelegramBot;
     /** @type {Logger|Console} */ logger: Logger | Console;
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
@@ -41,10 +42,10 @@ export default class TelegramCommander extends TelegramBot {
     private handleCancelCommand;
     /**
      * @param {Message} msg
-     * @param {Command} cmd
+     * @param {types.Command} cmd
      * @returns {Promise<boolean>}
      */
-    authorizeCommand(msg: Message, cmd: Command): Promise<boolean>;
+    authorizeCommand(msg: Message, cmd: types.Command): Promise<boolean>;
     /**
      * @private
      * @param {Message} msg

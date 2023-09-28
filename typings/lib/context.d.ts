@@ -21,7 +21,7 @@ export default class Context {
     });
     /** @readonly @type {number} */ readonly id: number;
     /** @type {types.ContextType} */ type: types.ContextType;
-    /** @type {TelegramCommander} */ bot: TelegramCommander;
+    /** @type {TelegramCommander} */ commander: TelegramCommander;
     /** @type {number} */ chatId: number;
     /** @type {Command} */ command: Command;
     /** @type {Message} */ triggerMsg: Message;
