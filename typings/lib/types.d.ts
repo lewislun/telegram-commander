@@ -29,6 +29,10 @@ export type TelegramCommanderOptions = {
      * whether to reply with error message when an error occurs
      */
     errorReplyEnabled?: boolean;
+    /**
+     * whether to reply with unauthorized message when a command is called from an unauthorized chat id
+     */
+    unauthorizedReplyEnabled?: boolean;
     plugins?: TelegramCommanderPlugin[];
 };
 export type Command = {

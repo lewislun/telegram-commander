@@ -14,16 +14,15 @@ export default class TelegramCommander {
      * @param {types.TelegramCommanderOptions} [opts={}]
      */
     constructor(token: string, opts?: types.TelegramCommanderOptions);
-    /** @type {import('node-telegram-bot-api')} */ bot: import('node-telegram-bot-api');
+    /** @type {TelegramBot} */ bot: TelegramBot;
     /** @type {Logger|Console} */ logger: Logger | Console;
     /** @type {Set<number>} */ whitelistedChatIdSet: Set<number>;
     /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
-    /** @type {ParseMode} */ defaultParseMode: ParseMode;
-    /** @type {boolean} */ errorReplyEnabled: boolean;
     /** @type {User} */ botUser: User;
     /** @type {TelegramCommanderPlugin[]} */ plugins: TelegramCommanderPlugin[];
     /** @type {((msg: Message, cmd: types.Command) => Promise<void>)[]} */ beforeAuthorizeCommandHooks: ((msg: Message, cmd: types.Command) => Promise<void>)[];
     /** @type {((cmd: types.Command) => Promise<void>)[]} */ afterAddCommandHooks: ((cmd: types.Command) => Promise<void>)[];
+    /** @type {types.TelegramCommanderOptions} */ opts: types.TelegramCommanderOptions;
     /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
     /** @protected @type {ReplyListenerRegistry} */ protected replyListenerRegistry: ReplyListenerRegistry;
     /**
@@ -85,6 +84,7 @@ export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type Message = import('node-telegram-bot-api').Message;
 export type User = import('node-telegram-bot-api').User;
 export type TelegramCommanderPlugin = import('./plugins').TelegramCommanderPlugin;
+import TelegramBot from 'node-telegram-bot-api';
 import * as types from './types.js';
 import ContextManager from './context-manager.js';
 import ReplyListenerRegistry from './reply-listener-registry.js';
