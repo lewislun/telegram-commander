@@ -10,19 +10,12 @@ export default class CommandAuth extends TelegramCommanderPlugin {
      * @param {object} [opts={}]
      * @param {Logger} [opts.logger] If not set, use the logger from TelegramCommander.
      * @param {number[]} [opts.defaultApproverChatIds] If not set, use the whitelistedChatIds from TelegramCommander.
-     * @param {object} [opts.storage] Persistent storage for permissions. If not set, use in-memory storage.
-     * @param {StorageGetter} opts.storage.getter Getter function for persistent storage.
-     * @param {StorageSetter} opts.storage.setter Setter function for persistent storage.
-     * @param {StorageRemover} opts.storage.remover Remover function for persistent storage.
+     * @param {StorageConfig} [opts.storage] Persistent storage for permissions. If not set, use in-memory storage.
      */
     constructor(groups: CommandGroup[], opts?: {
         logger?: Logger;
         defaultApproverChatIds?: number[];
-        storage?: {
-            getter: StorageGetter;
-            setter: StorageSetter;
-            remover: StorageRemover;
-        };
+        storage?: StorageConfig;
     });
     /** @type {Map<string, CommandGroup>} */ groupByPermission: Map<string, CommandGroup>;
     /** @type {Map<string, string} */ permissionByCommandName: Map<string, string>;
@@ -30,9 +23,6 @@ export default class CommandAuth extends TelegramCommanderPlugin {
     /** @type {CommandGroup[]} */ groups: CommandGroup[];
     /** @protected @type {Logger} */ protected logger: Logger;
     /** @protected @type {Map<string, number>} */ protected usageCountByChatPermission: Map<string, number>;
-    /** @protected @type {StorageGetter} */ protected storageGetter: StorageGetter;
-    /** @protected @type {StorageSetter} */ protected storageSetter: StorageSetter;
-    /** @protected @type {StorageRemover} */ protected storageRemover: StorageRemover;
     /**
      * @param {TelegramCommander} bot
      */
@@ -117,7 +107,8 @@ export default class CommandAuth extends TelegramCommanderPlugin {
 }
 export type Logger = import('winston').Logger;
 export type Message = import('node-telegram-bot-api').Message;
-export type TelegramCommander = import('../telegram-commander.js').default;
+export type TelegramCommanderOptions = import('../telegram-commander.js').default;
+export type StorageConfig = import('./base-plugin.js').StorageConfig;
 export type CommandGroup = {
     permission: string;
     description: string;
@@ -135,8 +126,5 @@ export type CommandGroup = {
 export type ChatPermission = {
     usageCount: number;
 };
-export type StorageGetter = (chatPermission: string) => Promise<ChatPermission | undefined>;
-export type StorageSetter = (chatPermission: string, val: ChatPermission) => Promise<void>;
-export type StorageRemover = (chatPermission: string) => Promise<void>;
 import TelegramCommanderPlugin from './base-plugin.js';
 import * as types from '../types.js';
