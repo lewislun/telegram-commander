@@ -18,6 +18,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'replykeyboard',
+	category: 'Keyboard',
 	description: 'Reply Keyboard Markup',
 	handler: async ctx => {
 		await ctx.reply(escapeMarkdownV2('Reply Keyboard pops up in the user\'s screen.'), { reply_markup: {
@@ -36,6 +37,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'inlinekeyboard',
+	category: 'Keyboard',
 	description: 'Inline Keyboard Markup',
 	handler: async ctx => {
 		const inlineKeyboardMsg = await ctx.reply('Inline Keyboard Markup shows under the message', { reply_markup: {
@@ -61,6 +63,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'persistentcontext',
+	category: 'Context',
 	description: 'Persistent Context',
 	contextType: ContextType.PERSISTENT,  // default is ContextType.LINEAR
 	handler: async ctx => {
@@ -93,6 +96,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'params',
+	category: 'Parameters',
 	description: 'Command with Params',
 	params: ['param1', 'param2'],
 	handler: async ctx => {
@@ -104,6 +108,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'optionalparams',
+	category: 'Parameters',
 	description: 'Command with Optional Params',
 	optionalParams: ['param1', 'param2'],
 	handler: async ctx => {
@@ -114,6 +119,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'mixedparams',
+	category: 'Parameters',
 	description: 'Command with both Params and Optional Params',
 	params: ['param1'],
 	optionalParams: ['param2'],
@@ -125,6 +131,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'nongroup',
+	category: 'Context',
 	description: 'Non-Group Command',
 	groupMode: false,  // group mode is enabled by default
 	handler: async ctx => {
@@ -140,6 +147,7 @@ commander.addCommand({
 
 commander.addCommand({
 	name: 'newconvo',
+	category: 'Context',
 	description: 'Start a new Conversation',
 	handler: async ctx => {
 		await ctx.reply('This command will start a new conversation in 5s\\.')

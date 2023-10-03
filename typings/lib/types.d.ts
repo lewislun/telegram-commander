@@ -39,6 +39,14 @@ export type Command = {
     name: string;
     handler: (ctx: Context) => Promise<void>;
     /**
+     * for organizing commands in help message
+     */
+    category?: string;
+    /**
+     * for help message
+     */
+    description?: string;
+    /**
      * If true, every one in the group can reply to the conversation. Does not affect direct messages.
      */
     groupMode?: boolean;
@@ -51,10 +59,6 @@ export type Command = {
      * Names here are for help messages only.
      */
     optionalParams?: string[];
-    /**
-     * for help message
-     */
-    description?: string;
     enabled?: boolean;
     /**
      * If true, the command will be included in /start message.
