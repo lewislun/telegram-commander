@@ -1,9 +1,13 @@
-import { TelegramCommander, escapeMarkdownV2, ContextType } from '../index.js'
+import { TelegramCommander, escapeMarkdownV2, ContextType, CommandNotifier } from '../index.js'
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN
+const NOTIFICATION_CHAT_ID = Number(process.env.NOTIFICATION_CHAT_ID)
 const commander = new TelegramCommander(TOKEN, {
 	logger: console,
 	defaultParseMode: 'MarkdownV2',
+	plugins: [
+		new CommandNotifier([NOTIFICATION_CHAT_ID]),
+	],
 })
 
 commander.addCommand({

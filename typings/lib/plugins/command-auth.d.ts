@@ -109,6 +109,7 @@ export type Logger = import('winston').Logger;
 export type Message = import('node-telegram-bot-api').Message;
 export type TelegramCommanderOptions = import('../telegram-commander.js').default;
 export type StorageConfig = import('./base-plugin.js').StorageConfig;
+export type TelegramCommander = import('../telegram-commander.js').default;
 export type CommandGroup = {
     permission: string;
     description: string;

@@ -1,5 +1,5 @@
 /**
- * @param {string} s
+ * @param {string|number} s
  * @returns {string}
  */
-export function escapeMarkdownV2(s: string): string;
+export function escapeMarkdownV2(s: string | number): string;
