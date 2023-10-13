@@ -22,9 +22,6 @@ export default class TelegramCommanderPlugin {
     /** @protected @type {StorageGetter} */ protected getStorage: StorageGetter;
     /** @protected @type {StorageSetter} */ protected setStorage: StorageSetter;
     /** @protected @type {StorageRemover} */ protected removeStorage: StorageRemover;
-    storageGetter: StorageGetter;
-    storageSetter: StorageSetter;
-    storageRemover: StorageRemover;
     init(commander: any): void;
 }
 export type TelegramCommander = import('../telegram-commander.js').default;
