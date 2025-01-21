@@ -13,14 +13,12 @@ export default class CommandNotifier extends TelegramCommanderPlugin {
      */
     init(bot: TelegramCommander): void;
     /**
-     * @protected
-     * @param {Message} msg
-     * @param {types.Command} cmd
+     * @param {Context} ctx
      * @returns {Promise<void>}
      */
-    protected beforeAuthorizeCommand(msg: Message, cmd: types.Command): Promise<void>;
+    beforeHandleCommand(ctx: Context): Promise<void>;
 }
 export type Message = import('node-telegram-bot-api').Message;
 export type TelegramCommander = import('../telegram-commander.js').default;
 import TelegramCommanderPlugin from './base-plugin.js';
-import * as types from '../types.js';
+import Context from '../context.js';

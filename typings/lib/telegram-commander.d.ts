@@ -5,6 +5,10 @@
  * @typedef {import('node-telegram-bot-api').Message} Message
  * @typedef {import('node-telegram-bot-api').User} User
  * @typedef {import('./plugins').TelegramCommanderPlugin} TelegramCommanderPlugin
+ *
+ * @typedef {(cmd: types.Command) => Promise<void>} AfterAddCommandHook
+ * @typedef {(ctx: Context) => Promise<boolean>} CheckCommandPermissionHook
+ * @typedef {(ctx: Context) => Promise<void>} BeforeHandleCommandHook
  */
 export const START_COMMAND_NAME: "start";
 export const CANCEL_COMMAND_NAME: "cancel";
@@ -20,11 +24,15 @@ export default class TelegramCommander {
     /** @type {Map<string, types.Command>} */ commandByName: Map<string, types.Command>;
     /** @type {User} */ botUser: User;
     /** @type {TelegramCommanderPlugin[]} */ plugins: TelegramCommanderPlugin[];
-    /** @type {((msg: Message, cmd: types.Command) => Promise<void>)[]} */ beforeAuthorizeCommandHooks: ((msg: Message, cmd: types.Command) => Promise<void>)[];
-    /** @type {((cmd: types.Command) => Promise<void>)[]} */ afterAddCommandHooks: ((cmd: types.Command) => Promise<void>)[];
     /** @type {types.TelegramCommanderOptions} */ opts: types.TelegramCommanderOptions;
     /** @protected @type {ContextManager} */ protected contextManager: ContextManager;
     /** @protected @type {ReplyListenerRegistry} */ protected replyListenerRegistry: ReplyListenerRegistry;
+    /** @type {AfterAddCommandHook[]} Runs after command is added */
+    afterAddCommandHooks: AfterAddCommandHook[];
+    /** @type {CheckCommandPermissionHook[]} Command is not authorized if one of these hooks returns false */
+    checkCommandPermissionHooks: CheckCommandPermissionHook[];
+    /** @type {BeforeHandleCommandHook[]} Runs before command handler is called */
+    beforeHandleCommandHooks: BeforeHandleCommandHook[];
     /**
      * Get all registered commands, with /cancel at the end.
      * @returns {types.Command[]}
@@ -40,11 +48,10 @@ export default class TelegramCommander {
      */
     private handleCancelCommand;
     /**
-     * @param {Message} msg
-     * @param {types.Command} cmd
+     * @param {Context} ctx
      * @returns {Promise<boolean>}
      */
-    authorizeCommand(msg: Message, cmd: types.Command): Promise<boolean>;
+    isWhitelisted(ctx: Context): Promise<boolean>;
     /**
      * @private
      * @param {Message} msg
@@ -84,6 +91,9 @@ export type ParseMode = import('node-telegram-bot-api').ParseMode;
 export type Message = import('node-telegram-bot-api').Message;
 export type User = import('node-telegram-bot-api').User;
 export type TelegramCommanderPlugin = import('./plugins').TelegramCommanderPlugin;
+export type AfterAddCommandHook = (cmd: types.Command) => Promise<void>;
+export type CheckCommandPermissionHook = (ctx: Context) => Promise<boolean>;
+export type BeforeHandleCommandHook = (ctx: Context) => Promise<void>;
 import TelegramBot from 'node-telegram-bot-api';
 import * as types from './types.js';
 import ContextManager from './context-manager.js';
