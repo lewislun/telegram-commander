@@ -52,6 +52,15 @@ export default class Context {
      */
     waitForCallbackQueryOnce(inlineKeyboardMsg: Message, opts?: types.WaitForCallbackQueryOnceOptions): Promise<import("node-telegram-bot-api").CallbackQuery>;
     /**
+     * Prompt the user for a text input. This is basically a wrapper around waitForMessage() and reply().
+     * @param {string|string[]} content
+     * @param {SendMessageOptions & { errorMsg?: string }} [opts={}]
+     * @returns {Promise<Message>}
+     */
+    promptText(content: string | string[], opts?: import("node-telegram-bot-api").SendMessageOptions & {
+        errorMsg?: string;
+    }): Promise<Message>;
+    /**
      * Cancel the context.
      */
     cancel(): void;
