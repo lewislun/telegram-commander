@@ -49,8 +49,17 @@ export default class Context {
      * @see https://core.telegram.org/bots/api#callbackquery
      * @param {Message} inlineKeyboardMsg The message that contains the inline keyboard.
      * @param {types.WaitForCallbackQueryOnceOptions} [opts={}]
+     * @returns {Promise<CallbackQuery>}
      */
-    waitForCallbackQueryOnce(inlineKeyboardMsg: Message, opts?: types.WaitForCallbackQueryOnceOptions): Promise<import("node-telegram-bot-api").CallbackQuery>;
+    waitForCallbackQueryOnce(inlineKeyboardMsg: Message, opts?: types.WaitForCallbackQueryOnceOptions): Promise<CallbackQuery>;
+    /**
+     * Prompt the user for a text input. It accepts both inline keyboard or text input, which ever comes first.
+     * This is a wrapper around reply(), waitForMessage() and waitForCallbackQueryOnce().
+     * @param {string|string[]} content
+     * @param {SendMessageOptions & PromptOptions} [opts={}]
+     * @returns {Promise<string>}
+     */
+    prompt(content: string | string[], opts?: SendMessageOptions & PromptOptions): Promise<string>;
     /**
      * Prompt the user for a text input. This is basically a wrapper around waitForMessage() and reply().
      * @param {string|string[]} content
@@ -61,6 +70,27 @@ export default class Context {
         errorMsg?: string;
     }): Promise<Message>;
     /**
+     * Prompt the user for a text input. This is basically a wrapper around waitForMessage() and reply().
+     * @param {string|string[]} content
+     * @param {string[]} enumValues
+     * @param {SendMessageOptions & { errorMsg?: string }} [opts={}]
+     * @returns {Promise<string>}
+     */
+    promptEnum(content: string | string[], enumValues: string[], opts?: import("node-telegram-bot-api").SendMessageOptions & {
+        errorMsg?: string;
+    }): Promise<string>;
+    /**
+     * Prompt the user for a number input. This is basically a wrapper around waitForMessage() and reply().
+     * @param {string|string[]} content
+     * @param {SendMessageOptions & { errorMsg?: string, min?: number, max?: number }} [opts={}]
+     * @returns {Promise<number>}
+     */
+    promptNumber(content: string | string[], opts?: import("node-telegram-bot-api").SendMessageOptions & {
+        errorMsg?: string;
+        min?: number;
+        max?: number;
+    }): Promise<number>;
+    /**
      * Cancel the context.
      */
     cancel(): void;
@@ -70,4 +100,12 @@ export type Message = import('node-telegram-bot-api').Message;
 export type CallbackQuery = import('node-telegram-bot-api').CallbackQuery;
 export type TelegramCommander = import('./telegram-commander.js').default;
 export type Command = import('./types.js').Command;
+export type PromptOptions = {
+    errorMsg?: string | ((result: string) => string);
+    validator?: (result: string) => boolean;
+    /**
+     * If defined, the prompt text will change to this text after the user has entered a valid input.
+     */
+    promptTextOnDone?: (result: string) => string;
+};
 import * as types from './types.js';

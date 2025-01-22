@@ -1,4 +1,4 @@
-import { TelegramCommander, escapeMarkdownV2, ContextType, CommandNotifier } from '../index.js'
+import { TelegramCommander, escapeMarkdownV2 as e, ContextType, CommandNotifier } from '../index.js'
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const NOTIFICATION_CHAT_ID = Number(process.env.NOTIFICATION_CHAT_ID)
@@ -21,16 +21,16 @@ commander.addCommand({
 	category: 'Keyboard',
 	description: 'Reply Keyboard Markup',
 	handler: async ctx => {
-		await ctx.reply(escapeMarkdownV2('Reply Keyboard pops up in the user\'s screen.'), { reply_markup: {
+		await ctx.reply(e('Reply Keyboard pops up in the user\'s screen.'), { reply_markup: {
 			one_time_keyboard: true,
 			keyboard: [
 				['A', 'B', 'C'],
 				['D', 'E', 'F'],
 			]
 		}})
-		await ctx.reply(escapeMarkdownV2('You can also try calling /cancel to cancel the command.'))
+		await ctx.reply(e('You can also try calling /cancel to cancel the command.'))
 		const msg = await ctx.waitForMessage()
-		await ctx.reply(escapeMarkdownV2(`You replied with ${msg.text}`))
+		await ctx.reply(e(`You replied with ${msg.text}`))
 		await ctx.reply('Reply Keyboard Markup closed')
 	}
 })
@@ -54,7 +54,7 @@ commander.addCommand({
 				],
 			]
 		}})
-		await ctx.reply(escapeMarkdownV2('You can also try calling /cancel to cancel the command.'))
+		await ctx.reply(e('You can also try calling /cancel to cancel the command.'))
 		const query = await ctx.waitForCallbackQueryOnce(inlineKeyboardMsg)
 		await ctx.reply(`You pressed ${query.data}`)
 		await ctx.reply('Inline Keyboard Markup closed')
@@ -68,7 +68,7 @@ commander.addCommand({
 	contextType: ContextType.PERSISTENT,  // default is ContextType.LINEAR
 	handler: async ctx => {
 		let loopCount = 0
-		await ctx.reply(escapeMarkdownV2('Persistent Context is not cancelled when another command or /cancel is called.'))
+		await ctx.reply(e('Persistent Context is not cancelled when another command or /cancel is called.'))
 		const keyboard = [[
 			{ text: 'Continue!', callback_data: 'continue' },
 			{ text: 'Leave!', callback_data: 'leave' },
@@ -102,7 +102,7 @@ commander.addCommand({
 	handler: async ctx => {
 		await ctx.reply(`You have entered ${ctx.args[0]} and ${ctx.args[1]}`)
 		await ctx.reply('For commands with params, they will not be shown in the command list, since clicking on the command list will instantly send the command without arguments in Telegram\\.')
-		await ctx.reply(escapeMarkdownV2('Arguments with spaces are supported too, just wrap them in double quotes. (e.g. /params "Hello World" 123)'))
+		await ctx.reply(e('Arguments with spaces are supported too, just wrap them in double quotes. (e.g. /params "Hello World" 123)'))
 	},
 })
 
@@ -136,10 +136,10 @@ commander.addCommand({
 	groupMode: false,  // group mode is enabled by default
 	handler: async ctx => {
 		await ctx.reply('This command only listens to reply of the command caller if it is in a group chat\\.')
-		await ctx.reply(escapeMarkdownV2('Waiting for caller\'s reply... (other group member can try to reply, but it will not be processed)'))
+		await ctx.reply(e('Waiting for caller\'s reply... (other group member can try to reply, but it will not be processed)'))
 		const msg = await ctx.waitForMessage()
-		await ctx.reply(escapeMarkdownV2(`Command Caller said ${msg.text}`))
-		const inlineKeyboardMsg = await ctx.reply(escapeMarkdownV2('Waiting for button press...'), { reply_markup: { inline_keyboard: [[{ text: 'Press me!', callback_data: 'press' }]] }})
+		await ctx.reply(e(`Command Caller said ${msg.text}`))
+		const inlineKeyboardMsg = await ctx.reply(e('Waiting for button press...'), { reply_markup: { inline_keyboard: [[{ text: 'Press me!', callback_data: 'press' }]] }})
 		await ctx.waitForCallbackQueryOnce(inlineKeyboardMsg)
 		await ctx.reply(`Command Caller pressed the button\\!`)
 	},
@@ -159,6 +159,22 @@ commander.addCommand({
 			})
 		}, 5000)
 		await ctx.reply('Context closed\\.')
+	}
+})
+
+commander.addCommand({
+	name: 'prompt',
+	category: 'Context',
+	description: 'Prompt the user for a text input',
+	handler: async ctx => {
+		await ctx.reply(e('This command demonstrates the use of prompt(). It accepts both inline keyboard and text input, which ever comes first. Please refer to the source code for more details.'))
+		const result = await ctx.prompt(e('Please enter a number between 1 and 100.'), {
+			reply_markup: { inline_keyboard: [[{ text: '42', callback_data: '42' }, { text: '69', callback_data: '69' }]] },
+			promptTextOnDone: result => e(`Please enter a number between 1 and 100: ${result}`),
+			errorMsg: result => e(`${result} is not a valid number between 1 and 100.`),
+			validator: result => Number(result) >= 1 && Number(result) <= 100,
+		})
+		await ctx.reply(e(`You entered ${result}`))
 	}
 })
 
