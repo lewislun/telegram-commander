@@ -175,6 +175,8 @@ commander.addCommand({
 			validator: result => Number(result) >= 1 && Number(result) <= 100,
 		})
 		await ctx.reply(e(`You entered ${result}`))
+		await ctx.prompt(e('Enter anything to end the conversation. Notice that the inline keyboard is removed automatically.'))
+		await ctx.reply(e('Conversation ended.'))
 	}
 })
 

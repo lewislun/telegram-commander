@@ -61,36 +61,6 @@ export default class Context {
      */
     prompt(content: string | string[], opts?: SendMessageOptions & PromptOptions): Promise<string>;
     /**
-     * Prompt the user for a text input. This is basically a wrapper around waitForMessage() and reply().
-     * @param {string|string[]} content
-     * @param {SendMessageOptions & { errorMsg?: string }} [opts={}]
-     * @returns {Promise<Message>}
-     */
-    promptText(content: string | string[], opts?: import("node-telegram-bot-api").SendMessageOptions & {
-        errorMsg?: string;
-    }): Promise<Message>;
-    /**
-     * Prompt the user for a text input. This is basically a wrapper around waitForMessage() and reply().
-     * @param {string|string[]} content
-     * @param {string[]} enumValues
-     * @param {SendMessageOptions & { errorMsg?: string }} [opts={}]
-     * @returns {Promise<string>}
-     */
-    promptEnum(content: string | string[], enumValues: string[], opts?: import("node-telegram-bot-api").SendMessageOptions & {
-        errorMsg?: string;
-    }): Promise<string>;
-    /**
-     * Prompt the user for a number input. This is basically a wrapper around waitForMessage() and reply().
-     * @param {string|string[]} content
-     * @param {SendMessageOptions & { errorMsg?: string, min?: number, max?: number }} [opts={}]
-     * @returns {Promise<number>}
-     */
-    promptNumber(content: string | string[], opts?: import("node-telegram-bot-api").SendMessageOptions & {
-        errorMsg?: string;
-        min?: number;
-        max?: number;
-    }): Promise<number>;
-    /**
      * Cancel the context.
      */
     cancel(): void;
