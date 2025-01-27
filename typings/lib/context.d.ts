@@ -71,6 +71,10 @@ export type CallbackQuery = import('node-telegram-bot-api').CallbackQuery;
 export type TelegramCommander = import('./telegram-commander.js').default;
 export type Command = import('./types.js').Command;
 export type PromptOptions = {
+    /**
+     * If false, text input will be ignored (only inline keyboard input will be accepted).
+     */
+    isManualInputEnabled?: boolean;
     errorMsg?: string | ((result: string) => string);
     validator?: (result: string) => boolean;
     /**
